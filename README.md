@@ -9,6 +9,8 @@ The related video can be watched on [Youtube](https://youtu.be/6O74De5BLeQ).
 
 Once the paper is accepted, the code will be published
 
-![image](https://github.com/ouguangjun/Leg-KILO/assets/105149931/b24a59f6-49d7-453e-9a15-09e70c283097)
+<p align='center'>
+    <img src="https://github.com/ouguangjun/kilo-dataset/blob/main/figure/map_dog.jpg" alt="drawing" width="600"/>
+</p>
 
 
