@@ -7,7 +7,7 @@ Related datasets have been released in [link](https://github.com/ouguangjun/legk
 
 The related video can be watched on [Youtube](https://youtu.be/6O74De5BLeQ). 
 
-Once the paper is accepted, the code will be published
+The code will be released once the paper accepted. 
 
 <p align='center'>
     <img src="https://github.com/ouguangjun/kilo-dataset/blob/main/figure/map_dog.jpg" alt="drawing" width="600"/>
