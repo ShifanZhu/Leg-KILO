@@ -41,3 +41,7 @@ The code will be released once the paper accepted.
 <p align='center'>
     <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/slope02.png" alt="drawing" width="900"/>
 </p>
+
+# Acknowledgments
+
+Thanks to [LIOSAM](https://github.com/TixiaoShan/LIO-SAM), [fast lio](https://github.com/hku-mars/FAST_LIO) and [A1-QP-MPC-Controller](https://github.com/ShuoYangRobotics/A1-QP-MPC-Controller) for sharing their works.
