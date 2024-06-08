@@ -26,4 +26,18 @@ The code will be released once the paper accepted.
 <p align='center'>
     <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/park.png" alt="drawing" width="900"/>
 </p>
-
+<p align='center'>
+    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/park02.png" alt="drawing" width="900"/>
+</p>
+<p align='center'>
+    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/corridor.png" alt="drawing" width="900"/>
+</p>
+<p align='center'>
+    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/corridor02.png" alt="drawing" width="900"/>
+</p>
+<p align='center'>
+    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/slope.png" alt="drawing" width="900"/>
+</p>
+<p align='center'>
+    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/slope02.png" alt="drawing" width="900"/>
+</p>
