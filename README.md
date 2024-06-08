@@ -24,6 +24,6 @@ The code will be released once the paper accepted.
 </p>
 
 <p align='center'>
-    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/park.png" alt="drawing" width="600"/>
+    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/park.png" alt="drawing" width="900"/>
 </p>
 
