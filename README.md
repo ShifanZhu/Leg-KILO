@@ -12,8 +12,18 @@ The related video can be watched on [Youtube](https://youtu.be/6O74De5BLeQ).
 # code
 The code will be released once the paper accepted. 
 
+
 <p align='center'>
     <img src="https://github.com/ouguangjun/kilo-dataset/blob/main/figure/map_dog.jpg" alt="drawing" width="600"/>
 </p>
 
+
+<p align='center'>
+    <img src="https://github.com/ouguangjun/kilo-dataset/blob/main/figure/dog01.jpg" alt="drawing" width="300"/>
+    <img src="https://github.com/ouguangjun/kilo-dataset/blob/main/figure/dog02.jpg" alt="drawing" width="300"/>
+</p>
+
+<p align='center'>
+    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/park.png" alt="drawing" width="600"/>
+</p>
 
