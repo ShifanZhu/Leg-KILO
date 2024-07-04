@@ -9,6 +9,12 @@ Related datasets have been released in [link](https://github.com/ouguangjun/legk
 # video
 The related video can be watched on [Youtube](https://youtu.be/6O74De5BLeQ). 
 
+<a href="[https://youtu.be/HyLNq-98LRo](https://youtu.be/6O74De5BLeQ)" target="_blank"><img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/youtube.png" 
+alt="leg-kilo" width="300"  /></a>
+
+
+
+
 # code
 The code will be released once the paper accepted. 
 
