@@ -1,0 +1,23 @@
+<launch>
+
+    <arg name="project" default="legkilo"/>
+    
+    <!-- Parameters -->
+    <rosparam file="$(find legkilo)/config/params_legkilo.yaml" command="load" />
+
+    <!--- LOAM -->
+    
+    <node pkg="legkilo" type="legkilo_msgIntegration"   name="legkilo_msgIntegration"    output="screen" 	respawn="true" />
+
+    <node pkg="legkilo" type="legkilo_imageProjection"     name="legkilo_imageProjection"      output="screen"     respawn="true"/>
+
+    <node pkg="legkilo" type="legkilo_featureExtraction"   name="legkilo_featureExtraction"    output="screen"     respawn="true"/>
+
+    <node pkg="legkilo" type="legkilo_mapOptmization"      name="legkilo_mapOptmization"       output="screen"     respawn="true" />
+
+    <node pkg="legkilo" type="legkilo_lidarProcessing"      name="legkilo_lidarProcessing"       output="screen"     respawn="true"/>
+
+    <!--- Run Rviz-->
+    <include file="$(find legkilo)/launch/include/module_rviz.launch" />
+launch-prefix="gdb -ex run --args"
+</launch>
