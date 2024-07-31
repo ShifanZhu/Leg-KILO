@@ -32,26 +32,15 @@ The code will be released once the paper accepted.
 
 
 
-
-<p align='center'>
-    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/park.png" alt="drawing" width="900"/>
-</p>
-<p align='center'>
-    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/park02.png" alt="drawing" width="900"/>
-</p>
-<p align='center'>
-    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/corridor.png" alt="drawing" width="900"/>
-</p>
-<p align='center'>
-    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/corridor02.png" alt="drawing" width="900"/>
-</p>
-<p align='center'>
-    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/slope.png" alt="drawing" width="900"/>
-</p>
-<p align='center'>
-    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/slope02.png" alt="drawing" width="900"/>
-</p>
-
 # Acknowledgments
 
-Thanks to [LIOSAM](https://github.com/TixiaoShan/LIO-SAM), [fast lio](https://github.com/hku-mars/FAST_LIO) and [A1-QP-MPC-Controller](https://github.com/ShuoYangRobotics/A1-QP-MPC-Controller) for sharing their works.
+Our project is developed on [LIOSAM](https://github.com/TixiaoShan/LIO-SAM) and retains the part of lidar optimization and loop closure detection , thanks very much to the authors for their excellent open source work. And also thanks to [fast lio](https://github.com/hku-mars/FAST_LIO) and [A1-QP-MPC-Controller](https://github.com/ShuoYangRobotics/A1-QP-MPC-Controller) for sharing their works.
+
+# License
+
+The code is under GPLv3, the same as [LIOSAM](https://github.com/TixiaoShan/LIO-SAM). 
+
+# Todo list
+
+- [ ] With Docker configuration
+- [ ] Test on other open source legged robot's datasets
