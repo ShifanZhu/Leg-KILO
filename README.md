@@ -11,34 +11,55 @@
     <img src="https://github.com/ouguangjun/kilo-dataset/blob/main/figure/dog02.jpg" alt="drawing" width="300"/>
 </p>
 
-# news
+# News
 - **`2024.07.31`:** The code is released.
 - **`2024.07.20`:** The paper is accepted by RA-L 2024!
 
-# dataset
+# Dataset
 Related datasets have been released in [link](https://github.com/ouguangjun/legkilo-dataset)
 
-# video
+# Video
 The related video can be watched on [Youtube](https://youtu.be/6O74De5BLeQ). 
 
 <a href="[https://youtu.be/HyLNq-98LRo](https://youtu.be/6O74De5BLeQ)" target="_blank"><img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/youtube.png" 
 alt="leg-kilo" width="500"  /></a>
 
 
+# Prerequisites
+Currently our code is tested on 
 
+- Ubuntu 18.04
+- ROS melodic
+- gtsam 4.0.3
+- pcl 1.8
 
-# code
-The code will be released once the paper accepted. 
+You can refer to the configuration process of [LIOSAM](https://github.com/TixiaoShan/LIO-SAM).
 
+# Run
+
+```
+cd ~/legkilo_ws/src
+git clone https://github.com/ouguangjun/Leg-KILO.git
+cd ..
+catkin_make
+```
+
+Download the dataset from [link](https://github.com/ouguangjun/legkilo-dataset)
+
+```
+source devel/setup.bash
+roslaunch legkilo run.launch
+rosbag play xxxx.bag
+```
 
 
 # Acknowledgments
 
-Our project is developed on [LIOSAM](https://github.com/TixiaoShan/LIO-SAM) and retains the part of lidar optimization and loop closure detection , thanks very much to the authors for their excellent open source work. And also thanks to [fast lio](https://github.com/hku-mars/FAST_LIO) and [A1-QP-MPC-Controller](https://github.com/ShuoYangRobotics/A1-QP-MPC-Controller) for sharing their works.
+Our project is developed on [LIOSAM](https://github.com/TixiaoShan/LIO-SAM) and retains the part of lidar optimization and loop closure detection , thanks very much to the authors for their excellent open source work. And also thanks to  [fast lio](https://github.com/hku-mars/FAST_LIO) for the ikd-tree,   and [A1-QP-MPC-Controller](https://github.com/ShuoYangRobotics/A1-QP-MPC-Controller).
 
 # License
 
-The code is under GPLv3, the same as [LIOSAM](https://github.com/TixiaoShan/LIO-SAM). 
+The code is under BSD 3-Clause License, the same as [LIOSAM](https://github.com/TixiaoShan/LIO-SAM). 
 
 # Todo list
 
