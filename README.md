@@ -32,9 +32,31 @@ Currently our code is tested on
 - ROS melodic
 - gtsam 4.0.3
 - pcl 1.8
-- [unitree_legged_msgs]([https://github.com/TixiaoShan/LIO-SAM](https://github.com/unitreerobotics/unitree_ros_to_real)) (has included in the project)
+- opencv 3.2
+- [unitree_legged_msgs](https://github.com/unitreerobotics/unitree_ros_to_real) (has included in the project)
 
 You can refer to the configuration process of [LIOSAM](https://github.com/TixiaoShan/LIO-SAM).
+
+We provide the ubuntu18.04 installation process, other versions may require some changes. We recommend that you install the ros desktop version, as this contains most of the required dependencies.
+
+Ros
+
+```
+apt-get update
+sudo apt-get install ros-melodic-desktop-full
+sudo rosdep init
+rosdep update
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Gtsam
+
+```
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:borglab/gtsam-release-4.0
+sudo apt install libgtsam-dev libgtsam-unstable-dev
+```
 
 # Run
 
@@ -65,4 +87,6 @@ The code is under BSD 3-Clause License, the same as [LIOSAM](https://github.com/
 # Todo list
 
 - [ ] With Docker configuration
+- [ ] Test on other ubuntu version
+- [ ] The matlab code for evaluation
 - [ ] Test on other open source legged robot's datasets
