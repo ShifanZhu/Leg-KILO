@@ -1,7 +1,7 @@
 # Leg-KILO: Robust Kinematic-Inertial-Lidar Odometry for Dynamic Legged Robots
 
 <p align='center'>
-    <img src="https://github.com/ouguangjun/kilo-dataset/blob/main/figure/overview0305.jpg" alt="drawing" width="500"/>
+    <img src="https://github.com/ouguangjun/Leg-KILO/blob/main/figure/overview0305.jpg" alt="drawing" width="500"/>
 </p>
 
 **Abstract** This paper presents  a robust multi-sensor fusion  framework, Leg-KILO (Kinematic-Inertial-Lidar Odometry). When lidar-based SLAM is applied to legged robots, high-dynamic motion (e.g., trot gait) introduces frequent foot impacts, leading to IMU degradation and lidar motion distortion. Direct use of IMU measurements can cause significant drift, especially in the z-axis direction. To address these limitations,  we tightly couple leg odometry, lidar odometry, and loop closure module based on graph optimization. For leg odometry, we propose a kinematic-inertial odometry using an on-manifold error-state Kalman filter, which incorporates the constraints from our proposed contact height detection to reduce height fluctuations. For lidar odometry,  we present an adaptive scan slicing and splicing method to alleviate the effects of high-dynamic motion. We further propose a robot-centric incremental mapping system that enhances map maintenance efficiency. Extensive experiments are conducted in both indoor and outdoor environments, showing that Leg-KILO has lower drift performance compared to other state-of-the-art lidar-based methods, especially during high-dynamic motion. To benefit the legged robot community, a lidar-inertial dataset containing leg kinematic data and the code  are released.
