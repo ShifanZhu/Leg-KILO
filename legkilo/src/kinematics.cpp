@@ -200,18 +200,19 @@ void Kinematic::stateUpdate(){
     H.block<3,3>(24,21) = -x.rot * skew(foot_pos_rel.block<3,1>(0,2));
     H.block<3,3>(27,21) = -x.rot * skew(foot_pos_rel.block<3,1>(0,3));
 
-    error_y.segment<3>(0) = imu_acc -  x.imu_a - x.ba;
+    error_y.segment<3>(0) = imu_acc -  x.imu_a - x.ba; // Eq. 16
     error_y.segment<3>(3) = imu_ang_vel - x.imu_w - x.bw;
     //error_y.segment<3>(3) = imu_ang_vel - x.imu_w;
-    error_y.segment<3>(6) = foot_pos_rel.block<3,1>(0,0) - rot_T * (x.foot_FL - x.pos);
+    error_y.segment<3>(6) = foot_pos_rel.block<3,1>(0,0) - rot_T * (x.foot_FL - x.pos); // Eq. 10
     error_y.segment<3>(9) = foot_pos_rel.block<3,1>(0,1)- rot_T * (x.foot_FR - x.pos);
     error_y.segment<3>(12) = foot_pos_rel.block<3,1>(0,2) - rot_T * (x.foot_RL - x.pos);
     error_y.segment<3>(15) = foot_pos_rel.block<3,1>(0,3) - rot_T * (x.foot_RR - x.pos);
-    error_y.segment<3>(18) = - x.vel - x.rot * (skew(x.imu_w)*foot_pos_rel.block<3,1>(0,0)+foot_vel_rel.block<3,1>(0,0));
+    error_y.segment<3>(18) = - x.vel - x.rot * (skew(x.imu_w)*foot_pos_rel.block<3,1>(0,0)+foot_vel_rel.block<3,1>(0,0)); // Eq. 8 9 assumes no slip
     error_y.segment<3>(21) = - x.vel - x.rot * (skew(x.imu_w)*foot_pos_rel.block<3,1>(0,1)+foot_vel_rel.block<3,1>(0,1));
     error_y.segment<3>(24) = - x.vel - x.rot * (skew(x.imu_w)*foot_pos_rel.block<3,1>(0,2)+foot_vel_rel.block<3,1>(0,2));
     error_y.segment<3>(27) = - x.vel - x.rot * (skew(x.imu_w)*foot_pos_rel.block<3,1>(0,3)+foot_vel_rel.block<3,1>(0,3));
 
+    // estimated_contacts is 0 or 1 which is estimated by force
     error_y(30) =   estimated_contacts[0] * footContactHeightSmooth(0) + (1.0-estimated_contacts[0])*(x.pos(2)+foot_pos_rel(2,0))- x.foot_FL(2);
     error_y(31) =   estimated_contacts[1] * footContactHeightSmooth(1) + (1.0-estimated_contacts[1])*(x.pos(2)+foot_pos_rel(2,1))- x.foot_FR(2);
     error_y(32) =   estimated_contacts[2] * footContactHeightSmooth(2) + (1.0-estimated_contacts[2])*(x.pos(2)+foot_pos_rel(2,2))- x.foot_RL(2);
@@ -375,7 +376,7 @@ bool Kinematic::getInfoFromMsg(const unitree_legged_msgs::HighState::ConstPtr &m
         currStamp = msg->stamp;
 
         for(int i=0; i< NUM_LEG; i++){
-            if(foot_force(i) > 200) estimated_contacts[i] = 1;
+            if(foot_force(i) > 200) estimated_contacts[i] = 1; // contact based on force
             else estimated_contacts[i] = 0;
         }
 

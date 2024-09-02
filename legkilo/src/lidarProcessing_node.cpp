@@ -162,12 +162,13 @@ class lidarProcessing : public ParamServer
         linearSum /= odomCount;
         angSum /= odomCount;
 
-        double ratio =  max(linearSum / maxLinearVel, angSum / maxAngularVel);
+        double ratio =  max(linearSum / maxLinearVel, angSum / maxAngularVel); // linearSum/3  angSum/(2*Pi)
 
     
         //std::cout << "vel:  " <<linearSum << std::endl;
         //std::cout << "ratio:  " <<ratio << std::endl;
 
+        // Basically, if the robot is moving fast, we need to cut more slices. eq. 20, 21
         return ratio >= 0.75 ? SLICE4 : (ratio >= 0.25 ? SLICE2 : SLICE1);
 
     }
