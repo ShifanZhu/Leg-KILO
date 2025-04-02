@@ -445,7 +445,7 @@ public:
             }
         }
 
-        ESKF.CHDcheck.assign(4, 0);
+        ESKF.CHDcheck.assign(4, 0); // CHD = contact height detection
         ESKF.CHDvalue.assign(4, 0.0);
         ESKF.CHDnoise.assign(4, 0.0);
 
@@ -466,14 +466,14 @@ public:
         std::vector<PointType2> footPosMeas(4);
         for(int i = 0; i < 4; ++i){
             if(ESKF.estimated_contacts[i] == 1){
-                Eigen::Vector3f  contactPoint_L_F;
+                Eigen::Vector3f  contactPoint_L_F; // contact point in lidar frame
                 contactPoint_L_F(0) = extRot(0, 0) * ESKF.foot_pos_rel(0, i) + extRot(0, 1) * ESKF.foot_pos_rel(1, i) + extRot(0, 2) * ESKF.foot_pos_rel(2, i) + extTrans(0);
                 contactPoint_L_F(1) = extRot(1, 0) * ESKF.foot_pos_rel(0, i) + extRot(1, 1) * ESKF.foot_pos_rel(1, i) + extRot(1, 2) * ESKF.foot_pos_rel(2, i) + extTrans(1);
                 contactPoint_L_F(2) = extRot(2, 0) * ESKF.foot_pos_rel(0, i) + extRot(2, 1) * ESKF.foot_pos_rel(1, i) + extRot(2, 2) * ESKF.foot_pos_rel(2, i) + extTrans(2);
 
-                Eigen::Vector3f  contactPoint_W_F = WorldStateAffineCur * contactPoint_L_F;
+                Eigen::Vector3f  contactPoint_W_F = WorldStateAffineCur * contactPoint_L_F; // contact point in world frame
 
-                footPosOri[i].x = contactPoint_W_F(0);
+                footPosOri[i].x = contactPoint_W_F(0); // store the original foot position in world frame
                 footPosOri[i].y = contactPoint_W_F(1);
                 footPosOri[i].z = contactPoint_W_F(2);
 
@@ -499,15 +499,18 @@ public:
                 float roughness;
                 if(!est_plane(pca_result, nearestPoints, 0.01, roughness))  continue;
 
+                // Calculating the Signed Distance of the original foot position from the plane
                 float r = pca_result(0) * footPosOri[i].x + pca_result(1) * footPosOri[i].y + pca_result(2) * footPosOri[i].z + pca_result(3);
 
+                // Projecting the Foot Position onto the Plane
                 footPosMeas[i].x = footPosOri[i].x - r*pca_result(0);
                 footPosMeas[i].y = footPosOri[i].y - r*pca_result(1);
                 footPosMeas[i].z = footPosOri[i].z - r*pca_result(2);
 
+                // Validating the Projection
                 if(abs(footPosMeas[i].z -mean.z) > 0.03 ) continue;
 
-                ESKF.CHDvalue[i] = footPosMeas[i].z;
+                ESKF.CHDvalue[i] = footPosMeas[i].z; // store the contact height in world frame
                 ESKF.CHDcheck[i] = 1;
                 ESKF.CHDnoise[i] = abs(roughness * pca_result(2));
 
@@ -575,10 +578,10 @@ public:
         roughness = 0.0;
         for (int j = 0; j < NUM_MATCH_POINTS; j++)
         {
-            roughness += pca_result(0) * point[j].x + pca_result(1) * point[j].y + pca_result(2) * point[j].z + pca_result(3);
+            roughness += pca_result(0) * point[j].x + pca_result(1) * point[j].y + pca_result(2) * point[j].z + pca_result(3); // eq. 13
         }
 
-        roughness  = roughness / NUM_MATCH_POINTS;
+        roughness  = roughness / NUM_MATCH_POINTS; // eq. 13
         if(roughness > threshold) return false;
         return true;
     }
@@ -1886,16 +1889,24 @@ public:
     {
         if (cloudKeyPoses3D->points.empty())
         {
+            // 第一帧初始化先验因子
             noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Variances((Vector(6) << 1e-2, 1e-2, M_PI*M_PI, 1e8, 1e8, 1e8).finished()); // rad*rad, meter*meter
             gtSAMgraph.add(PriorFactor<Pose3>(0, trans2gtsamPose(transformTobeMapped), priorNoise));
+            // 变量节点设置初始值
             initialEstimate.insert(0, trans2gtsamPose(transformTobeMapped));
 
         }else{
+            // note：如果不是第一帧，就会增加帧间约束
+            // 添加激光里程计因子
             noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Variances((Vector(6) << 1e-6, 1e-6, 1e-6, 1e-4, 1e-4, 1e-4).finished());
+            // 上一帧经过因子图优化后的位姿结果
             gtsam::Pose3 poseFrom = pclPointTogtsamPose3(cloudKeyPoses6D->points.back());
+            // 当前帧scan-to-map之后未经过因子图优化的位姿
             gtsam::Pose3 poseTo   = trans2gtsamPose(transformTobeMapped);
             gtsam::Pose3 relPose = poseFrom.between(poseTo);
+            // 参数：前一帧id，当前帧id，前一帧与当前帧的位姿变换（作为观测值），噪声协方差  //note：这是增加的一个帧间约束，采用scan to map
             gtSAMgraph.add(BetweenFactor<Pose3>(cloudKeyPoses3D->size()-1, cloudKeyPoses3D->size(), relPose, odometryNoise));
+            // 变量节点设置初始值
             initialEstimate.insert(cloudKeyPoses3D->size(), poseTo);
 
         }
@@ -1906,6 +1917,7 @@ public:
         if (gpsQueue.empty())
             return;
 
+        // 如果没有关键帧，或者首尾关键帧距离小于5m，不添加gps因子
         // wait for system initialized and settles down
         if (cloudKeyPoses3D->points.empty())
             return;
@@ -1915,6 +1927,7 @@ public:
                 return;
         }
 
+        // 位姿协方差（gtsam提供）很小，没必要加入GPS数据进行校正
         // pose covariance small, no need to correct
         if (poseCovariance(3,3) < poseCovThreshold && poseCovariance(4,4) < poseCovThreshold)
             return;
@@ -1924,11 +1937,13 @@ public:
 
         while (!gpsQueue.empty())
         {
+            // 删除当前帧0.2s之前的里程计
             if (gpsQueue.front().header.stamp.toSec() < timeLaserInfoCur - 0.2)
             {
                 // message too old
                 gpsQueue.pop_front();
             }
+            // 超过当前帧0.2s之后，退出
             else if (gpsQueue.front().header.stamp.toSec() > timeLaserInfoCur + 0.2)
             {
                 // message too new
@@ -1939,6 +1954,8 @@ public:
                 nav_msgs::Odometry thisGPS = gpsQueue.front();
                 gpsQueue.pop_front();
 
+                // note：gps的数据会先被一个成熟的节点（在module_navsat.launch文件）处理，我们直接调用的gps的处理结果
+                // GPS噪声协方差太大，不能用
                 // GPS too noisy, skip
                 float noise_x = thisGPS.pose.covariance[0];
                 float noise_y = thisGPS.pose.covariance[7];
@@ -1946,19 +1963,23 @@ public:
                 if (noise_x > gpsCovThreshold || noise_y > gpsCovThreshold)
                     continue;
 
+                // GPS里程计位置
                 float gps_x = thisGPS.pose.pose.position.x;
                 float gps_y = thisGPS.pose.pose.position.y;
                 float gps_z = thisGPS.pose.pose.position.z;
+                // 是否使用gps的z方向数据，一般来说，gpsZ轴方向数据不靠谱
                 if (!useGpsElevation)
                 {
                     gps_z = transformTobeMapped[5];
                     noise_z = 0.01;
                 }
 
+                // (0,0,0)无效数据
                 // GPS not properly initialized (0,0,0)
                 if (abs(gps_x) < 1e-6 && abs(gps_y) < 1e-6)
                     continue;
 
+                // 每隔5m添加一个GPS里程计
                 // Add GPS every a few meters
                 PointType curGPSPoint;
                 curGPSPoint.x = gps_x;
@@ -1969,12 +1990,15 @@ public:
                 else
                     lastGPSPoint = curGPSPoint;
 
+                // 添加GPS因子
                 gtsam::Vector Vector3(3);
+                // gps置信度，标准差设置的成最小1m，也就是不会特别信任gps信号
                 Vector3 << max(noise_x, 1.0f), max(noise_y, 1.0f), max(noise_z, 1.0f);
                 noiseModel::Diagonal::shared_ptr gps_noise = noiseModel::Diagonal::Variances(Vector3);
                 gtsam::GPSFactor gps_factor(cloudKeyPoses3D->size(), gtsam::Point3(gps_x, gps_y, gps_z), gps_noise);
                 gtSAMgraph.add(gps_factor);
 
+                // note：加入gps之后就等同于回环，需要触发较多的isam_update
                 aLoopIsClosed = true;
                 break;
             }
@@ -1986,12 +2010,16 @@ public:
         if (loopIndexQueue.empty())
             return;
 
+        // 闭环队列
         for (int i = 0; i < (int)loopIndexQueue.size(); ++i)
         {
+            // 闭环边对应两帧的索引
             int indexFrom = loopIndexQueue[i].first;
             int indexTo = loopIndexQueue[i].second;
+            // 闭环边的位姿变换，这是一个帧间约束
             gtsam::Pose3 poseBetween = loopPoseQueue[i];
-            // gtsam::noiseModel::Diagonal::shared_ptr noiseBetween = loopNoiseQueue[i]; // original 
+            // gtsam::noiseModel::Diagonal::shared_ptr noiseBetween = loopNoiseQueue[i]; // original
+            // 回环的置信度就是icp的得分
             auto noiseBetween = loopNoiseQueue[i]; // giseop for polymorhpism // shared_ptr<gtsam::noiseModel::Base>, typedef noiseModel::Base::shared_ptr gtsam::SharedNoiseModel
             gtSAMgraph.add(BetweenFactor<Pose3>(indexFrom, indexTo, poseBetween, noiseBetween));
 
@@ -2110,7 +2138,7 @@ public:
         addGPSFactor();
 
         // loop factor
-        addLoopFactor(); // radius search loop factor (I changed the orignal func name addLoopFactor to addLoopFactor)
+        addLoopFactor(); // radius search loop factor
 
         // leg odometry factor
         addLegOdometryFactor();
@@ -2135,6 +2163,7 @@ public:
         PointTypePose thisPose6D;
         Pose3 latestEstimate;
 
+        // Get optimized results
         isamCurrentEstimate = isam->calculateEstimate();
         latestEstimate = isamCurrentEstimate.at<Pose3>(isamCurrentEstimate.size()-1);
         // cout << "****************************************************" << endl;

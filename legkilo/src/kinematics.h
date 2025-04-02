@@ -112,7 +112,7 @@ class Kinematic{
 
         bool kdtreeInit = false;
 
-        std::vector<int> CHDcheck;
+        std::vector<int> CHDcheck; // CHD = contact height detection
         std::vector<double> CHDvalue;
         std::vector<double> CHDnoise;
 

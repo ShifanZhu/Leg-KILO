@@ -163,6 +163,7 @@ void Kinematic::stateUpdate(){
     }else{
         for(int i = 0; i < 4; ++i){
             if(CHDcheck[i]){
+                // The new smoothed contact height is calculated as the average (weighted equally) of the current smoothed height and a newly computed value. 
                 footContactHeightSmooth(i) = 0.5 * footContactHeightSmooth(i) + 
                                              0.5 * (foot_pos_rel_init(2, i) + CHDvalue[i] - footContactHeightInit(i));
             }
